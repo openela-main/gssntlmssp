@@ -1,0 +1,28 @@
+From ddab884bf3a2de76c26559e962919e1145040f11 Mon Sep 17 00:00:00 2001
+From: Simo Sorce <simo@redhat.com>
+Date: Fri, 17 Mar 2023 09:08:13 -0400
+Subject: [PATCH] Fix potential crash when no target name is present
+
+Signed-off-by: Simo Sorce <simo@redhat.com>
+---
+ src/ntlm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/ntlm.c b/src/ntlm.c
+index 0f71bfd..60a0787 100644
+--- a/src/ntlm.c
++++ b/src/ntlm.c
+@@ -325,7 +325,9 @@ done:
+         safefree(out);
+     } else {
+         /* make sure to terminate output string */
+-        out[outlen] = '\0';
++        if (out) {
++            out[outlen] = '\0';
++        }
+     }
+ 
+     *str = out;
+-- 
+2.39.2
+
